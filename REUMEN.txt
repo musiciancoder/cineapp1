@@ -1,0 +1,10 @@
+Injeccion de Dependencias MVC: Se crea una interfaz (IPeliculasService) y una clase de servicio que implementa esta interfaz (PeliculasServiceImp).
+En la clase de servicio es donde se ingresan los datos en MVC 
+En el controlador, al crearse un campo de esta interfaz, este tendra acceso a todos los metodos de la clase de servicio.
+
+DataBinding MVC-->El databinding en MVC se realiza entre la clase de modelo (Peliculas) y el formulario JSP (formPelicula), ya que cada path de los inserts del formulario tienen los mismos nombres de los atributos de la clase modelo. con @ModelAtribute y nombre clase de modelo + instancia de clase de modelo (@ModelAtribute Pelicula pelicula) en el argumento del metodo que renderiza el formulario en el  controlador automaticamente se realiza el databinding
+
+MVC+JPA (PARA BASES DE DATOS EXTERNA)
+
+
+Injeccion de dependencias JPA +MVC  (esto es para tener acceso a los metodos CRUD)-->Se crea una interfaz que extiende de JpaRepository (PeliculasRepository extends JpaRepository). En la clase de servicio que esta implementando la interfaz en la inyeccion por dependencias de MVC (PeliculasServiceJPA en este caso, no PeliculasServiceImp que se ocupa solo para MVC sin JPA) se declara un campo de Peliculas Repository, que tendra acceso a todos los metodos crud, y que seran empleados al interior de cada metodo que sobreescribamos. Estos metodos sobreescritos son llamados en los controladores  

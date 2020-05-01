@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	version="3.1">
+
+	<!-- CONFIGURACION PARA SERVLET DISPATCHER -->
+	<servlet>
+		<servlet-name>springmvc</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/dispatcher-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+
+
+		<!-- CONFIGURACION PARA AGREGAR ARCHIVOS AL SERVIDOR-->
+	<!-- 	<multipart-config>
+			<location>/tmp</location> esta es la ruta para linux
+
+		</multipart-config> -->
+
+	</servlet>
+
+	<!-- CONFIGURACION PARA URL -->
+	<servlet-mapping>
+		<servlet-name>springmvc</servlet-name>
+		<!-- con *.html le decimos que debe llevar .html en la url, con / le indicamos 
+			que no debe llevar html necesariamente en la url <url-pattern>*.html</url-pattern> -->
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+	<!-- CONFIGURACION Spring Security Filter filtra todas las URL -->
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+
+	<!-- CONFIGURACION PARA ROOTAPLICATIONCONTEXT Y SPRINGSECURITY-->
+	<!-- primer bean requerido para rootAplicationContext, le indicamos el nombre 
+		y la ubicacion del rootcontext; /WEB-INF/spring/security.xml es el archivo de springsecurity -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/spring/root-context.xml,
+		/WEB-INF/spring/security.xml
+		</param-value>
+	</context-param>
+
+
+	<!-- segundo bean requerido para rootAplicationContext. Aca declaramos un 
+		listener. root web application context before servlet initialization -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+
+</web-app>

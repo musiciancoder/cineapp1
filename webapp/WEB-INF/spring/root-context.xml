@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Estos son solo los namespaces necesarios para la configuracion de root-context, que maneja bases de datos y negocios, a diferencia del servletDispatcher que es para web. Los que dicen JPA son para JPA (VER VIDEO CONFIGURACION JPA) -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   		http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/context 
+			http://www.springframework.org/schema/context/spring-context-4.3.xsd
+			http://www.springframework.org/schema/data/jpa 
+			http://www.springframework.org/schema/data/jpa/spring-jpa-1.8.xsd
+			http://www.springframework.org/schema/tx 
+			http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+			
+<!-- Indicamos el paquete donde estan nuestras clases de servicio -->
+	<context:component-scan base-package="net.itinajero.app.service" />
+	
+	<!-- Indicamos el paquete donde estan nuestro repositorios jpa -->
+	<jpa:repositories base-package="net.itinajero.app.repository" />
+	
+	<!-- Los cuatro bean siguientes corresponden a clases de JDBC. La idea es ocupar estos beans para ahorrarnos el codigo que involucra a estas clases -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/cineapp?useSSL=false&amp;serverTimezone=America/Santiago"/>
+		<property name="username" value="root" />
+		<!-- <property name="password" value="Drooko2019." /> -->
+	</bean>
+	<bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+		<property name="generateDdl" value="false" />
+		<property name="showSql" value="true"></property>
+		<property name="databasePlatform" value="org.hibernate.dialect.MySQL5Dialect" />
+	</bean>
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="packagesToScan" value="net.itinajero.app.model" />
+		<property name="dataSource" ref="dataSource" />
+		<property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
+	</bean>
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+
+	
+
+</beans>
